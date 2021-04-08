@@ -1,0 +1,49 @@
+<% if flash[:bookupdate] %>
+  <div class="flash"><p><%= flash[:bookupdate] %></p></div>
+<% end %>
+<% if flash[:booknew] %>
+  <div class="flash"><p><%= flash[:booknew] %></p></div>
+<% end %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <%= render 'users/list', userinfo: @userinfo %>
+      <%= render 'books/list', book: @newbook %>
+    </div>
+    <div class="col-md-8 offset-md-1">
+      <h2 class="book-heading">Book detail</h2>
+      <table class="table">
+        <% if @book.user == current_user %>
+          <tbody>
+            <tr>
+              <td>
+                <%= link_to user_path(current_user.id) do %>
+                <%= attachment_image_tag @userinfo, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg", size:'35x35' %> <br>
+                <%= @userinfo.name %>
+                <% end %>
+              </td>
+              <td><%= @book.title %></td>
+              <td><%= @book.body %></td>
+              <td><%= link_to "Edit", edit_book_path(@book), :class => 'btn btn-sm btn-success' %></td>
+              <td><%= link_to "Destroy", book_path(@book), method: :delete, "data-confirm" => "本当に消しますか？", :class => 'btn btn-sm btn-danger' %></td>
+            </tr>
+          </tbody>
+        <% else %>
+          <tbody>
+            <tr>
+              <td>
+                <%= link_to user_path(@book.user.id) do %>
+                <%= attachment_image_tag @book.user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg", size:'35x35' %> <br>
+                <%= @book.user.name %>
+                <% end %>
+              </td>
+
+              <td><%= @book.title %></td>
+              <td><%= @book.body %></td>
+            </tr>
+          </tbody>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>
